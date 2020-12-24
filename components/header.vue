@@ -1,15 +1,13 @@
 <template>
   <div>
-    <header>
-        Introduction Site
-    </header>
+    <header>Introduction Site</header>
   </div>
 </template>
 
 <style scoped>
-  header {
-    color: #fff;
-    padding: 20px;
-    background-color: #527b8e;
-  }
+header {
+  color: #fff;
+  padding: 20px;
+  background-color: #527b8e;
+}
 </style>
