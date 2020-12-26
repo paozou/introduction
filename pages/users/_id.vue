@@ -29,6 +29,7 @@
 
 <script>
 export default {
+  // asyncDataの引数でcontextが渡されているので必要なものをすぐに使えるようにしておく
   async asyncData({ route, app }) {
     const user = await app.$axios.$get(
       `https://qiita.com/api/v2/users/${route.params.id}`
