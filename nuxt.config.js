@@ -21,9 +21,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [
-    '~/plugins/axios.js',
-  ],
+  plugins: ['~/plugins/axios.js'],
   env: {
     QIITA_TOKEN: process.env.QIITA_TOKEN,
   },
@@ -39,16 +37,9 @@ export default {
     '@nuxtjs/stylelint-module',
   ],
 
-  // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [],
-
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
   loading: { color: '#388070' },
-  modules: [
-    '@nuxtjs/axios'
-  ],
-  axios: {
-
-  },
+  modules: ['@nuxtjs/axios'],
+  axios: {},
 }
