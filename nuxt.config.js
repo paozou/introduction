@@ -8,6 +8,7 @@ export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'introduction-nuxt',
+    titleTemplate: '%s | Nuxt.js tag items viewer',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -20,7 +21,10 @@ export default {
   css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: ['~/plugins/axios.js'],
+  env: {
+    QIITA_TOKEN: process.env.QIITA_TOKEN,
+  },
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -33,9 +37,9 @@ export default {
     '@nuxtjs/stylelint-module',
   ],
 
-  // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [],
-
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
+  loading: { color: '#388070' },
+  modules: ['@nuxtjs/axios'],
+  axios: {},
 }
