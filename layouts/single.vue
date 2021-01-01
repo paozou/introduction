@@ -1,9 +1,10 @@
 <template>
   <div>
-    <span>default layout</span>
+    <span>single layout</span>
     <AppNavigation />
     <hr />
-    <Nuxt />
+    <nuxt />
+    <nuxt-link to="/">トップへ戻る</nuxt-link>
     <hr />
     <footer>footer</footer>
   </div>
