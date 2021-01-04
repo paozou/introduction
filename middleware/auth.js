@@ -11,7 +11,7 @@ export default ({ req, route, redirect }) => {
   if (credential && route.path === '/login') {
     return redirect('/')
   }
-  if (!credential && route.path !== 'login') {
+  if (!credential && route.path !== '/login') {
     return redirect('/login')
   }
 }
