@@ -42,4 +42,9 @@ export default {
   loading: { color: '#388070' },
   modules: ['@nuxtjs/axios'],
   axios: {},
+  router: {
+    middleware: [
+      'auth',
+    ],
+  },
 }
