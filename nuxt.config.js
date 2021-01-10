@@ -1,4 +1,6 @@
 export default {
+  mode: 'universal',
+  srcDir: 'app',
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
 
@@ -18,10 +20,10 @@ export default {
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: ['element-ui/lib/theme-chalk/index.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/axios.js'],
+  plugins: ['~/plugins/axios.js', '@/plugins/element-ui'],
   env: {
     QIITA_TOKEN: process.env.QIITA_TOKEN,
   },
@@ -41,10 +43,10 @@ export default {
   build: {},
   loading: { color: '#388070' },
   modules: ['@nuxtjs/axios'],
-  axios: {},
+  axios: {
+    baseURL: 'https://nuxt-blog-service-b23ca-default-rtdb.firebaseio.com',
+  },
   router: {
-    middleware: [
-      'auth',
-    ],
+    middleware: ['auth-cookie'],
   },
 }
