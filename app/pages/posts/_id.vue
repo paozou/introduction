@@ -7,6 +7,28 @@
           <small>by {{ post.user.id }}</small>
         </div>
         <p>{{ post.body }}</p>
+        <p class="text-right">
+          <el-button
+            v-if="isLiked"
+            :disabled="!isLoggedIn"
+            type="warning"
+            round
+            @click="unlike"
+          >
+            <span class="el-icon-star-on" />
+            <span>{{ post.likes.length }}</span>
+          </el-button>
+          <el-button
+            v-else
+            :disabled="!isLoggedIn"
+            type="warning"
+            round
+            @click="like"
+          >
+            <span class="el-icon-star-off" />
+            <span>{{ post.likes.length }}</span>
+          </el-button>
+        </p>
         <p class="text-right">{{ post.created_at | time }}</p>
       </el-card>
       <p>
@@ -17,7 +39,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import cloneDeep from 'lodash.clonedeep'
 import moment from '~/plugins/moment'
 export default {
   filters: {
@@ -43,7 +66,28 @@ export default {
     post() {
       return this.posts.find((p) => p.id === this.$route.params.id)
     },
+    ...mapGetters('user', ['isLoggedIn']),
     ...mapGetters('posts', ['posts']),
+  },
+  methods: {
+    like() {
+      if (!this.isLoggedIn) {
+        return
+      }
+      const likePayload = { user: this.user, post: this.post }
+      this.addLikeToPost(cloneDeep(likePayload))
+      this.addLikeLogToUser(cloneDeep(likePayload))
+    },
+    unlike() {
+      if (!this.isLoggedIn) {
+        return
+      }
+      const unlikePayload = { user: this.user, post: this.post }
+      this.removeLikeToPost(cloneDeep(unlikePayload))
+      this.removeLikeLogToUser(cloneDeep(unlikePayload))
+    },
+    ...mapActions(['addLikeLogToUser', 'removeLikeLogToUser']),
+    ...mapActions('posts', ['addLikeToPost', 'removeLikeToPost']),
   },
 }
 </script>

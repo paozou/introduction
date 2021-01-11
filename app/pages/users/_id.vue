@@ -1,88 +1,60 @@
 <template>
-  <section class="container">
-    <div>
-      <h3>{{ user.id }}</h3>
-      <img :src="user.profile_image_url" width="120" alt="" />
-      <p>{{ user.description || 'No description' }}</p>
-      <p>
-        <nuxt-link to="/">
-          <small>
-            <b>トップへ戻る</b>
-          </small>
-        </nuxt-link>
-      </p>
-      <h3>{{ user.id }}さんの投稿一覧</h3>
-      <ul>
-        <li v-for="item in items" :key="item.id">
-          <h4>
-            <span>{{ item.title }}</span>
-          </h4>
-          <div>{{ item.body.slice(0, 130) }}・・・・・・・</div>
-          <p>
-            <a target="_blank" :href="item.url">{{ item.url }}</a>
-          </p>
-        </li>
-      </ul>
-    </div>
-  </section>
+  <div>
+    <el-row v-if="user">
+      <el-col :span="6">
+        <el-card class="text-center" style="margin-right: 16px">
+          <div>
+            <img
+              src="https://placehold.it/150x150"
+              style="width: 100%; margin-bottom: 16px; border-radius: 2px"
+              alt=""
+            />
+          </div>
+          <h2>
+            <b>{{ user.id }}</b>
+          </h2>
+        </el-card>
+      </el-col>
+      <el-col :span="18">
+        <el-card>
+          <div slot="header" class="clearfix">
+            <span>{{ user.id }} さんの投稿</span>
+          </div>
+          <el-table :data="userPosts" style="width: 100%" class="table">
+            <el-table-column prop="title" label="タイトル" />
+            <el-table-column prop="created_at" label="投稿日時" width="160" />
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+import moment from '~/plugins/moment'
 export default {
-  async asyncData({ route, store, redirect }) {
-    if (store.getters.users[route.params.id]) {
-      return
-    }
+  async asyncData({ store, route, error }) {
+    const { id } = route.params
     try {
-      await store.dispatch('fetchUserInfo', { id: route.params.id })
+      await store.dispatch('users/fetchUser', { id })
     } catch (e) {
-      redirect('/')
+      error({ statusCode: 404 })
     }
   },
   computed: {
+    userPosts() {
+      return Object.entries(this.user.posts).map(([id, post]) => {
+        post.created_at = moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')
+        return { id, ...post }
+      })
+    },
     user() {
-      return this.users[this.$route.params.id]
+      const user = this.users.find((u) => u.id === this.$route.params.id)
+      if (!user) return null
+      return Object.assign({ posts: [] }, user)
     },
-    items() {
-      return this.userItems[this.$route.params.id] || []
-    },
-    ...mapGetters(['users', 'userItems']),
-  },
-  head() {
-    return {
-      title: this.user.id,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'userごとのdescription',
-        },
-      ],
-      link: [{ rel: 'canonical', href: '' }],
-    }
+    ...mapGetters('users', ['users']),
   },
 }
 </script>
-
-<style scoped>
-.container {
-  min-height: 100vh;
-  padding: 16px;
-}
-
-h3 {
-  margin: 16px 0;
-  padding: 8px 0;
-  border-bottom: solid 1px #e5e5e5;
-}
-
-li + li {
-  margin: 16px 0;
-}
-
-p {
-  margin: 8px 0;
-}
-</style>
