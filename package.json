@@ -12,7 +12,8 @@
     "lint": "npm run lint:js && npm run lint:style",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "fix-js": "eslint --ext .js,.vue . --fix",
-    "lint-js": "eslint --ext .js,.vue ."
+    "lint-js": "eslint --ext .js,.vue .",
+    "test": "jest"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",
@@ -46,6 +47,7 @@
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-vue": "^6.2.2",
     "husky": "^4.3.0",
+    "jest": "^26.6.3",
     "lint-staged": "^10.4.0",
     "prettier": "^2.2.1",
     "stylelint": "^13.7.2",

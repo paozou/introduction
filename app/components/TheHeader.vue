@@ -6,17 +6,24 @@
     <el-menu-item index="2" :route="{ path: '/posts/' }">
       投稿一覧
     </el-menu-item>
-    <el-menu-item
-      v-if="user"
-      index="4"
-      style="float: right"
-      :route="{ path: `/users/${user.id}` }"
-    >
-      <span>{{ user.id }}</span>
-    </el-menu-item>
-    <el-menu-item v-else index="4" style="float: right" :route="{ path: '/' }">
-      <span>ログイン</span>
-    </el-menu-item>
+    <client-only>
+      <el-menu-item
+        v-if="user"
+        index="4"
+        style="float: right"
+        :route="{ path: `/users/${user.id}` }"
+      >
+        <span>{{ user.id }}</span>
+      </el-menu-item>
+      <el-menu-item
+        v-else
+        index="4"
+        style="float: right"
+        :route="{ path: '/' }"
+      >
+        <span>ログイン</span>
+      </el-menu-item>
+    </client-only>
     <el-menu-item
       index="5"
       style="float: right"

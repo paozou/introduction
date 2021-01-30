@@ -7,28 +7,30 @@
           <small>by {{ post.user.id }}</small>
         </div>
         <p>{{ post.body }}</p>
-        <p class="text-right">
-          <el-button
-            v-if="isLiked"
-            :disabled="!isLoggedIn"
-            type="warning"
-            round
-            @click="unlike"
-          >
-            <span class="el-icon-star-on" />
-            <span>{{ post.likes.length }}</span>
-          </el-button>
-          <el-button
-            v-else
-            :disabled="!isLoggedIn"
-            type="warning"
-            round
-            @click="like"
-          >
-            <span class="el-icon-star-off" />
-            <span>{{ post.likes.length }}</span>
-          </el-button>
-        </p>
+        <no-ssr>
+          <p class="text-right">
+            <el-button
+              v-if="isLiked"
+              :disabled="!isLoggedIn"
+              type="warning"
+              round
+              @click="unlike"
+            >
+              <span class="el-icon-star-on" />
+              <span>{{ post.likes.length }}</span>
+            </el-button>
+            <el-button
+              v-else
+              :disabled="!isLoggedIn"
+              type="warning"
+              round
+              @click="like"
+            >
+              <span class="el-icon-star-off" />
+              <span>{{ post.likes.length }}</span>
+            </el-button>
+          </p>
+        </no-ssr>
         <p class="text-right">{{ post.created_at | time }}</p>
       </el-card>
       <p>
@@ -66,7 +68,11 @@ export default {
     post() {
       return this.posts.find((p) => p.id === this.$route.params.id)
     },
-    ...mapGetters('user', ['isLoggedIn']),
+    isLiked() {
+      if (!this.user) return false
+      return this.post.likes.find((l) => l.user_id === this.user.id)
+    },
+    ...mapGetters(['isLoggedIn']),
     ...mapGetters('posts', ['posts']),
   },
   methods: {
